@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive OPE 104 Quiz - Group 3</title>
+    <style>
+        :root {
+            --bg-color: #fcf4f6;
+            --card-bg: #ffffff;
+            --primary-pink: #d87093;
+            --soft-pink: #f8dbed;
+            --hover-pink: #f0c2dd;
+            --dark-pink: #8b4513;
+            --text-dark: #4a3b40;
+            --text-muted: #7a6b70;
+            --correct-bg: #d4edda;
+            --correct-border: #c3e6cb;
+            --incorrect-bg: #f8d7da;
+            --incorrect-border: #f5c6cb;
+            --shadow: 0 4px 15px rgba(216, 112, 147, 0.15);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border: 2px solid var(--soft-pink);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--soft-pink);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary-pink);
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--soft-pink);
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-pink);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-number {
+            font-weight: 600;
+            color: var(--primary-pink);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background-color: #fff;
+            border: 2px solid var(--soft-pink);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 1rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            background-color: var(--hover-pink);
+            border-color: var(--primary-pink);
+        }
+
+        .option-btn.correct {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--correct-border) !important;
+            color: #155724;
+            font-weight: 600;
+        }
+
+        .option-btn.incorrect {
+            background-color: var(--incorrect-bg) !important;
+            border-color: var(--incorrect-border) !important;
+            color: #721c24;
+        }
+
+        .footer {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-next {
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-next:hover {
+            background-color: #c2597d;
+        }
+
+        .btn-next:disabled {
+            background-color: #e0b0bc;
+            cursor: not-allowed;
+        }
+
+        .score-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .score-title {
+            font-size: 2rem;
+            color: var(--primary-pink);
+            margin-bottom: 15px;
+        }
+
+        .score-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .restart-btn {
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .restart-btn:hover {
+            background-color: #c2597d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container" id="quizContainer">
+    <header>
+        <h1>Medical Office Procedures Quiz</h1>
+        <div class="subtitle">Complete Question Bank — Group 3 (Security Information Systems & Reading Techniques)</div>
+    </header>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="quizBody">
+        <div class="question-number" id="questionNumber">Question 1</div>
+        <div class="question-text" id="questionText">Question content goes here...</div>
+        <div class="options-container" id="optionsContainer"></div>
+
+        <div class="footer">
+            <span id="scoreTracker" style="color: var(--text-muted); font-size: 0.9rem;"></span>
+            <button class="btn-next" id="nextBtn" onclick="nextQuestion()" disabled>Next Question</button>
+        </div>
+    </div>
+
+    <div id="resultBody" class="score-container" style="display: none;">
+        <div class="score-title">Quiz Completed!</div>
+        <div class="score-number" id="finalScore">0 / 0</div>
+        <p id="scoreFeedback" style="color: var(--text-muted); margin-bottom: 30px;"></p>
+        <button class="restart-btn" onclick="restartQuiz()">Try Again</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        // Slide 1 & Objectives
+        {
+            question: "What is the course code for the Medical Office Procedures module presented by Group 3?",
+            options: ["OPE 101", "OPE 104", "MED 201", "CBA 104"],
+            answer: 1
+        },
+        {
+            question: "Which college department prepared the presentation on Security Information Systems and Reading Skills?",
+            options: ["College of Nursing", "College of Arts and Sciences", "College of Business Administration and Management", "College of Computer Studies"],
+            answer: 2
+        },
+        // Ice Breakers / Anagrams
+        {
+            question: "In the Ice Breaker activity, which unscrambled term represents 'The Secret Code' security measure?",
+            options: ["FIREWALL", "ENCRYPTION", "PHISHING", "COMPREHENSION"],
+            answer: 1
+        },
+        {
+            question: "What unscrambled word corresponds to the security threat described as 'The Fake Email' (SHINPHIG)?",
+            options: ["PHISHING", "SPAMMING", "MALWARE", "SPOOFING"],
+            answer: 0
+        },
+        {
+            question: "What is 'The Ultimate Purpose' of reading, represented by the unscrambled word EOHSNICOMPREN?",
+            options: ["FLUENCY", "VOCABULARY", "COMPREHENSION", "PHONICS"],
+            answer: 2
+        },
+        {
+            question: "Which unscrambled word corresponds to 'The Network Guard' (LAFWELRIL)?",
+            options: ["ANTIVIRUS", "FIREWALL", "ENCRYPTION", "PASSWORDS"],
+            answer: 1
+        },
+        {
+            question: "What reading skill is defined as 'Smooth Reading' (YECNFLU)?",
+            options: ["PHONICS", "FLUENCY", "ACCURACY", "SPEED"],
+            answer: 1
+        },
+        // Information System Security Definition & CIA Triad
+        {
+            question: "How is Information System Security defined in the presentation?",
+            options: [
+                "The physical locking of computer hardware in storage rooms",
+                "The protection of computers, networks, software, and information from unauthorized access, damage, or misuse",
+                "The process of speeding up network data transmissions",
+                "The practice of reading complex medical files faster"
+            ],
+            answer: 1
+        },
+        {
+            question: "What does the abbreviation 'CIA' stand for in Information System Security?",
+            options: [
+                "Control, Information, Access",
+                "Confidentiality, Integrity, Availability",
+                "Cybersecurity, Intelligence, Authenticity",
+                "Computer, Internet, Automation"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which component of the CIA Triad ensures that information is only accessible to those authorized to view it?",
+            options: ["Integrity", "Availability", "Confidentiality", "Authentication"],
+            answer: 2
+        },
+        {
+            question: "Ensuring that information remains unaltered and accurately represents its intended state relates to which core goal?",
+            options: ["Availability", "Confidentiality", "Integrity", "Authorization"],
+            answer: 2
+        },
+        {
+            question: "Which element of the CIA Triad ensures that information is accessible when needed by authorized individuals?",
+            options: ["Availability", "Integrity", "Confidentiality", "Encryption"],
+            answer: 0
+        },
+        // Security Measures & Techniques
+        {
+            question: "What does RBAC stand for in terms of access control?",
+            options: [
+                "Risk-Based Access Control",
+                "Role-Based Access Control",
+                "Restricted-Broad Access Code",
+                "Random Binary Access Control"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which security technique protects sensitive data both 'at rest' and 'in transit'?",
+            options: ["Firewalls", "Encryption", "Patch Management", "Network Segmentation"],
+            answer: 1
+        },
+        {
+            question: "What is the primary function of a Firewall?",
+            options: [
+                "To detect and fix software bugs automatically",
+                "To monitor and control incoming and outgoing network traffic",
+                "To train employees against email phishing",
+                "To restore lost system files during a crash"
+            ],
+            answer: 1
+        },
+        {
+            question: "What is the purpose of an Intrusion Detection System (IDS)?",
+            options: [
+                "To block physical entry into server rooms",
+                "To encrypt system backups",
+                "To detect and respond to suspicious activities or potential breaches in real time",
+                "To segment networks into smaller subnets"
+            ],
+            answer: 2
+        },
+        {
+            question: "Why is installing and regularly updating Antivirus and Malware software necessary?",
+            options: [
+                "To increase internet browsing speed",
+                "To protect systems against malware and other software threats",
+                "To automatically generate user passwords",
+                "To organize data files in graphic organizers"
+            ],
+            answer: 1
+        },
+        {
+            question: "Why are periodic security audits and vulnerability assessments conducted?",
+            options: [
+                "To evaluate employee reading comprehension",
+                "To identify and reduce system weaknesses",
+                "To backup data to external hardware",
+                "To write source code for new applications"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which security practice involves restoring operations after data loss or emergency events?",
+            options: ["Patch Management", "Data Backup and Recovery", "Network Segmentation", "User Education"],
+            answer: 1
+        },
+        {
+            question: "Phishing awareness and safe internet usage training fall under which security technique?",
+            options: ["Secure Software Development", "User Education and Training", "Patch Management", "Intrusion Detection Systems"],
+            answer: 1
+        },
+        {
+            question: "Regularly updating software and systems to fix vulnerabilities is referred to as:",
+            options: ["Patch Management", "Network Segmentation", "Data Encryption", "System Audit"],
+            answer: 0
+        },
+        {
+            question: "What is Multi-Factor Authentication (MFA)?",
+            options: [
+                "An encryption scheme using multiple secret keys",
+                "Adding an extra layer of security by requiring multiple forms of verification",
+                "Using multiple firewalls on a single network",
+                "Dividing networks into multiple virtual channels"
+            ],
+            answer: 1
+        },
+        {
+            question: "Following secure coding practices and conducting code reviews are key elements of:",
+            options: ["Role-Based Access Control", "Secure Software Development", "Network Segmentation", "Vulnerability Scanning"],
+            answer: 1
+        },
+        {
+            question: "What is Network Segmentation?",
+            options: [
+                "Dividing networks into segments to limit the spread of potential breaches and improve security controls",
+                "Connecting multiple offices together through a single cable",
+                "Encrypting network packets before transmission",
+                "Assigning different passwords to every user"
+            ],
+            answer: 0
+        },
+        // Reading Techniques
+        {
+            question: "Which technique involves working in small groups with a teacher to focus on specific reading strategies?",
+            options: ["Shared Reading", "Guided Reading", "Read Aloud", "Independent Reading"],
+            answer: 1
+        },
+        {
+            question: "Reading aloud directly helps improve which of the following reading aspects?",
+            options: ["Fluency and comprehension while building confidence", "Network security awareness", "Phonemic awareness speed", "Software patch updates"],
+            answer: 0
+        },
+        {
+            question: "What reading technique involves reading together with a teacher or peers to promote discussion and deeper understanding?",
+            options: ["Guided Reading", "Shared Reading", "Silent Reading", "Phonics Practice"],
+            answer: 1
+        },
+        {
+            question: "Introducing new words in context and providing practice opportunities describes:",
+            options: ["Graphic Organizers", "Vocabulary Instruction", "Comprehension Mapping", "Diverse Reading"],
+            answer: 1
+        },
+        {
+            question: "Story maps and Venn diagrams are examples of:",
+            options: ["Network diagrams", "Graphic organizers", "Reading strategies", "Software frameworks"],
+            answer: 1
+        },
+        {
+            question: "Summarizing, predicting, and visualizing are classified as:",
+            options: ["Reading Strategies", "Components of Phonics", "Access Controls", "Auditing Techniques"],
+            answer: 0
+        },
+        // Critical Components of Reading Skills
+        {
+            question: "What is Phonemic Awareness?",
+            options: [
+                "Connecting written letters to spoken sounds",
+                "The ability to hear, identify, and manipulate individual sounds in spoken words",
+                "Understanding the full meaning of complex text",
+                "Reading text with proper speed and voice expression"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which reading component connects sounds to letters and letter patterns to decode and encode words accurately?",
+            options: ["Phonics", "Phonemic Awareness", "Fluency", "Vocabulary"],
+            answer: 0
+        },
+        {
+            question: "Vocabulary knowledge includes two main aspects: depth and ____.",
+            options: ["Length", "Breadth", "Rate", "Tone"],
+            answer: 1
+        },
+        {
+            question: "How is Fluency defined among the critical reading components?",
+            options: [
+                "The ability to memorize entire passages accurately",
+                "The ability to read with accuracy, appropriate rate, and expression",
+                "The power to write stories using complex words",
+                "The capacity to identify single isolated sounds"
+            ],
+            answer: 1
+        },
+        {
+            question: "Which component is defined as the ability to understand, interpret, and make meaning from text by integrating background knowledge?",
+            options: ["Comprehension", "Fluency", "Phonics", "Vocabulary"],
+            answer: 0
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let selectedOption = null;
+
+    const questionNumberEl = document.getElementById("questionNumber");
+    const questionTextEl = document.getElementById("questionText");
+    const optionsContainerEl = document.getElementById("optionsContainer");
+    const nextBtn = document.getElementById("nextBtn");
+    const progressBar = document.getElementById("progressBar");
+    const scoreTracker = document.getElementById("scoreTracker");
+
+    function loadQuestion() {
+        if (questions.length === 0) return;
+
+        const q = questions[currentQuestionIndex];
+        selectedOption = null;
+        nextBtn.disabled = true;
+
+        questionNumberEl.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+        questionTextEl.textContent = q.question;
+        scoreTracker.textContent = `Score: ${score}`;
+
+        const progressPct = ((currentQuestionIndex) / questions.length) * 100;
+        progressBar.style.width = `${progressPct}%`;
+
+        optionsContainerEl.innerHTML = "";
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.textContent = opt;
+            btn.onclick = () => selectOption(idx, btn);
+            optionsContainerEl.appendChild(btn);
+        });
+    }
+
+    function selectOption(index, button) {
+        if (selectedOption !== null) return;
+
+        selectedOption = index;
+        const q = questions[currentQuestionIndex];
+        const buttons = optionsContainerEl.querySelectorAll(".option-btn");
+
+        buttons.forEach((btn, idx) => {
+            btn.disabled = true;
+            if (idx === q.answer) {
+                btn.classList.add("correct");
+            } else if (idx === index) {
+                btn.classList.add("incorrect");
+            }
+        });
+
+        if (index === q.answer) {
+            score++;
+            scoreTracker.textContent = `Score: ${score}`;
+        }
+
+        nextBtn.disabled = false;
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        document.getElementById("quizBody").style.display = "none";
+        document.getElementById("resultBody").style.display = "block";
+        progressBar.style.width = "100%";
+
+        const finalScoreEl = document.getElementById("finalScore");
+        const feedbackEl = document.getElementById("scoreFeedback");
+
+        finalScoreEl.textContent = `${score} / ${questions.length}`;
+
+        const percentage = questions.length > 0 ? (score / questions.length) * 100 : 0;
+        if (percentage >= 85) {
+            feedbackEl.textContent = "Outstanding performance! You have thoroughly mastered all topics from Group 3's presentation!";
+        } else if (percentage >= 70) {
+            feedbackEl.textContent = "Great job! You have a strong grasp of Information Security and Reading Techniques.";
+        } else if (percentage >= 50) {
+            feedbackEl.textContent = "Fair effort! Review the PDF slides to strengthen your understanding.";
+        } else {
+            feedbackEl.textContent = "Keep practicing! Review the PDF materials thoroughly and try again.";
+        }
+    }
+
+    function restartQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        document.getElementById("quizBody").style.display = "block";
+        document.getElementById("resultBody").style.display = "none";
+        loadQuestion();
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
